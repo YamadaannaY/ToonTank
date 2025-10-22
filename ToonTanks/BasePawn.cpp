@@ -9,9 +9,10 @@
 // Sets default values
 ABasePawn::ABasePawn()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ // Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	//creat  instance of capsule component
+	
+	//创建可赋值的实例，并将其与根组件绑定
 	CapsuleComp=CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Collider"));
 	RootComponent=CapsuleComp;
 
@@ -28,8 +29,10 @@ ABasePawn::ABasePawn()
 
 void ABasePawn::HandeleDestruction()
 {
-	//handle visual / sound effects
+	//在设置好具体子类的情况下处理声效和音效
+
 	if (DeathParticle){
+	//在当前world的特定位置以特定朝向生成粒子特效
 	UGameplayStatics::SpawnEmitterAtLocation(this,DeathParticle,GetActorLocation(),GetActorRotation());
 	}
 	if (DeathSound)
@@ -45,13 +48,11 @@ void ABasePawn::HandeleDestruction()
 
 void ABasePawn::RotateTurret(FVector LookAtTarget)
 {
-	//get a vector between target to turret location ,it is a world space direction
+	//传入一个目标位置，获得二者之间的向量，将这个向量的欧拉角旋转度作为炮台的旋转度
 	FVector ToTarget = LookAtTarget-TurretMesh->GetComponentLocation();
 	
 	//only effect the Yaw because we not expect the turret to turn up , down or roll
 	FRotator LookAtRotation= FRotator(0.f,ToTarget.Rotation().Yaw,0.f);
-	
-	//delivery the frotator var to mesh.
 	TurretMesh->SetWorldRotation(LookAtRotation);
 }	
 
