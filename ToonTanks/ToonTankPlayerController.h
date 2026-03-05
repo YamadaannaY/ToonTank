@@ -14,5 +14,6 @@ class TOONTANKS_API AToonTankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 public:
+	//GameStart和End时候调用，禁止/允许玩家输入
 	void SetPlayerEnabledState(bool bPlayerEnabled);
 };

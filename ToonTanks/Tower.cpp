@@ -1,22 +1,18 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Tower.h"
 #include "Tank.h"
+#include "ToonTankGameMode.h"
 #include "kismet/GameplayStatics.h"
-
-
 
 void ATower::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
 	if (Tank)
 	{
-		// Find the  distance to the  tank
 		float Distance=FVector::Dist(GetActorLocation(),Tank->GetActorLocation());
-		//Check if the Tank is in range
-		if (Distance<=FireRange)
-		{	//If in range,rotate turret toward	Tank
+		
+		if (Distance<=FireRange && ToonTankGameMode->bGameOver == false)
+		{
 			RotateTurret(Tank->GetActorLocation());
 		}
 	}
@@ -24,7 +20,7 @@ void ATower::Tick(float DeltaTime)
 
 void ATower::HandleDestruction()
 {
-	Super::HandeleDestruction();
+	Super::HandleDestruction();
 
 	Destroy();
 }
@@ -42,8 +38,10 @@ void ATower::CheckFireCondition()
 	if (Tank)
 	{
 		float Distance=FVector::Dist(GetActorLocation(),Tank->GetActorLocation());
+		
 		if (Distance<=FireRange && Tank->bAlive)
 		{
-			Fire();		}
+			Fire();
+		}
 	}
 }

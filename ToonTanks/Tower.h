@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -16,21 +14,21 @@ class TOONTANKS_API ATower : public ABasePawn
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	void HandleDestruction();
+	virtual void HandleDestruction() override;
 	
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
+	UPROPERTY()
 	class ATank* Tank;
+	
 	UPROPERTY(EditDefaultsOnly,Category="Components")
 	float FireRange=300.f;
 
 	FTimerHandle FireRateTimerHandle;
 	float FireRate=2.f;
+
+	//循环定时器，判断Dist和玩家的bAlive的bool状态，决定是否开火
 	void CheckFireCondition();
-	
-	
-	
 };

@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -12,12 +10,12 @@ class TOONTANKS_API UHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
+public:
+	
 	UHealthComponent();
 
 protected:
-	// Called when the game starts
+	
 	virtual void BeginPlay() override;
 
 public:
@@ -27,13 +25,13 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	float Health=0.f;
 
-	UFUNCTION()
-	void DamageTaken(AActor* DamagedActor,float Damage,const UDamageType* DamageType,class AController* Instigator,AActor* DamageCauser);
-
+	UPROPERTY()
 	class AToonTankGameMode* ToonTankGameMode;
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	//Hit回调触发的伤害应用，血量小于0触发GameMode中的ActorDied
+	UFUNCTION()
+	void DamageTaken(AActor* DamagedActor,float Damage,const UDamageType* DamageType,AController* Instigator,AActor* DamageCauser);
+
+	//Tick
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 };

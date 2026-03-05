@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,19 +5,29 @@
 #include "GameFramework/Pawn.h"
 #include "BasePawn.generated.h"
 
+class AToonTankGameMode;
+
 UCLASS()
 class TOONTANKS_API ABasePawn : public APawn
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	ABasePawn();
 
-	void HandeleDestruction();
+	virtual void BeginPlay() override;
+
+	//处理死亡时的VFX
+	virtual void HandleDestruction();
+	
+	UPROPERTY()
+	AToonTankGameMode* ToonTankGameMode;
 
 protected:
+	//旋转炮塔，Tick中调用
 	void RotateTurret(FVector LookAtTarget);
+	
+	//生成Projectile，配置了初速度和加速度
 	void Fire();
 
 private:
@@ -35,16 +44,15 @@ private:
 	USceneComponent* ProjectilesSpawnPoint;
 
 	UPROPERTY(EditDefaultsOnly,Category="Combat")
-	//allow the use of subclass of class,such as it`s  blueprint class which have Mesh we need.
 	TSubclassOf<class AProjectile> ProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly,Category="Combat")
-	class UParticleSystem* DeathParticle;
+	UParticleSystem* DeathParticle;
 
 	UPROPERTY(EditDefaultsOnly,Category="Combat")
-	class USoundBase* DeathSound;
+	USoundBase* DeathSound;
 
 	UPROPERTY(EditAnywhere,Category="Combat")
-	TSubclassOf<class UCameraShakeBase> DeathCameraShakeclass;
+	TSubclassOf<UCameraShakeBase> DeathCameraShakeClass;
 
 };

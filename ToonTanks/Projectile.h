@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -14,9 +13,7 @@ class TOONTANKS_API AProjectile : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AProjectile();
-
 private:
 	UPROPERTY(EditDefaultsOnly,Category="Combat");
 	UStaticMeshComponent* ProjectileMesh;
@@ -27,14 +24,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	float Damage=20.f;
 
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent*HitComp,AActor* OtherActor,UPrimitiveComponent* OtherComp,FVector NormalImpulse,const FHitResult& Hit);
-
 	UPROPERTY(EditDefaultsOnly,Category="Combat")
-	class UParticleSystem* HitParticles;
+	UParticleSystem* HitParticles;
 
 	UPROPERTY(VisibleAnywhere)
-	class UParticleSystemComponent* TrailParticles;
+	UParticleSystemComponent* TrailParticles;
 	
 	UPROPERTY(EditDefaultsOnly,Category="Combat")
 	USoundBase* LunchSound;
@@ -43,15 +37,12 @@ private:
 	USoundBase* HitSound;
 
 	UPROPERTY(EditDefaultsOnly,Category="Combat")
-	TSubclassOf<class UCameraShakeBase> HitCameraShakeclass;
-	
+	TSubclassOf<UCameraShakeBase> HitCameraShakeclass;
+
+	//OnComponentHit回调，通过判断后触发ApplyDamage到HitActor
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent*HitComp,AActor* OtherActor,UPrimitiveComponent* OtherComp,FVector NormalImpulse,const FHitResult& Hit);
 	
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	
 };

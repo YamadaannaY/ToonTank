@@ -1,16 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Projectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "particles/ParticleSystemComponent.h"
 #include "Camera/CameraShakeBase.h"
 
-// Sets default values
 AProjectile::AProjectile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick =false;
 
 	ProjectileMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ProjectileMesh"));
@@ -19,12 +14,11 @@ AProjectile::AProjectile()
 	ProjectileMovement=CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	ProjectileMovement->InitialSpeed=1300.f;
 	ProjectileMovement->MaxSpeed=1300.f;
-	//Creat a trail particles
-	TrailParticles=CreateDefaultSubobject<UParticleSystemComponent>(TEXT("SomkeTrail"));
+	
+	TrailParticles=CreateDefaultSubobject<UParticleSystemComponent>(TEXT("SmokeTrail"));
 	TrailParticles->SetupAttachment(RootComponent);
 }
 
-// Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
@@ -34,24 +28,16 @@ void AProjectile::BeginPlay()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this,LunchSound,GetActorLocation());
 	}
-	
-}
-
-// Called every frame
-void AProjectile::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 
 void AProjectile::OnHit(UPrimitiveComponent*HitComp,AActor* OtherActor,UPrimitiveComponent* OtherComp,FVector NormalImpulse,const FHitResult& Hit)
 {
-	AActor* MyOwner=GetOwner();
+	const AActor* MyOwner=GetOwner();
 	if (MyOwner==nullptr)
 	{
 		Destroy();
 		return;
-	};
+	}
 
 	AController* MyOwnerInstigator=MyOwner->GetInstigatorController();
 
@@ -59,10 +45,8 @@ void AProjectile::OnHit(UPrimitiveComponent*HitComp,AActor* OtherActor,UPrimitiv
 
 	if (OtherActor && OtherActor!=this && OtherActor!=MyOwner)
 	{
-		//Oncomponenthithit happens and broadcast will call onhit,which apply damage and trigger delegate OnTakeAnyDamage,the
-		//delegate call the DamageTaken 
 		UGameplayStatics::ApplyDamage(OtherActor,Damage,MyOwnerInstigator,this,DamageTypeClass);
-		//Spawn a particle if hit partciles being created;
+
 		if (HitParticles)
 		{
 		UGameplayStatics::SpawnEmitterAtLocation(this,HitParticles,GetActorLocation(),GetActorRotation());
@@ -75,9 +59,6 @@ void AProjectile::OnHit(UPrimitiveComponent*HitComp,AActor* OtherActor,UPrimitiv
 		{
 			GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(HitCameraShakeclass);
 		}
-		
 	}
 	Destroy();
 }
-
-
