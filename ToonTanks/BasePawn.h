@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -14,8 +13,6 @@ class TOONTANKS_API ABasePawn : public APawn
 
 public:
 	ABasePawn();
-
-	virtual void BeginPlay() override;
 
 	//处理死亡时的VFX
 	virtual void HandleDestruction();

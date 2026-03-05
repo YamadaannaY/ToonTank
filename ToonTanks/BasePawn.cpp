@@ -1,7 +1,7 @@
 #include "BasePawn.h"
 #include "Components/CapsuleComponent.h"
 #include "Projectile.h"
-#include "ToonTankGameMode.h"
+#include "ToonTanks/ToonTankGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
 ABasePawn::ABasePawn()
@@ -20,11 +20,6 @@ ABasePawn::ABasePawn()
 	ProjectilesSpawnPoint=CreateDefaultSubobject<USceneComponent>(TEXT("Spawn Point"));
 	ProjectilesSpawnPoint->SetupAttachment(TurretMesh);
 
-}
-
-void ABasePawn::BeginPlay()
-{
-	Super::BeginPlay();
 	ToonTankGameMode = Cast<AToonTankGameMode>(UGameplayStatics::GetGameMode(this));
 }
 
